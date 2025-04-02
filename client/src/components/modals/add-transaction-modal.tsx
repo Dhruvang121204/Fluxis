@@ -199,7 +199,7 @@ export default function AddTransactionModal({ isOpen, onClose }: AddTransactionM
                       <Input 
                         type="text"
                         inputMode="decimal"
-                        placeholder="0.00" 
+                        placeholder="0" 
                         className="pl-7" 
                         value={field.value}
                         onChange={(e) => {

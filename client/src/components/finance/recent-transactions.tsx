@@ -22,7 +22,7 @@ export default function RecentTransactions() {
   
   // Determine the currency symbol based on user settings
   const getCurrencySymbol = () => {
-    if (!userSettings?.currency) return "$"; // Default to USD
+    if (!userSettings?.currency) return "₹"; // Default to INR
     
     switch(userSettings.currency) {
       case "USD": return "$";
@@ -32,7 +32,7 @@ export default function RecentTransactions() {
       case "JPY": return "¥";
       case "CAD": return "C$";
       case "AUD": return "A$";
-      default: return "$";
+      default: return "₹";
     }
   };
 
@@ -154,7 +154,7 @@ export default function RecentTransactions() {
                 <p className={`font-semibold ${
                   transaction.type === 'income' ? 'text-success-500' : 'text-danger-500'
                 } font-mono`}>
-                  {transaction.type === 'income' ? '+' : '-'}{getCurrencySymbol()}{Number(transaction.amount).toFixed(2)}
+                  {transaction.type === 'income' ? '+' : '-'}{getCurrencySymbol()}{Number(transaction.amount).toFixed(0)}
                 </p>
               </div>
             ))

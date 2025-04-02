@@ -8,9 +8,10 @@ export function formatCurrency(amount: number, currencyCode: string = 'INR'): st
   // Special case for INR to ensure proper formatting (₹ symbol shows correctly)
   if (codeToUse === 'INR') {
     // Manually format INR with ₹ symbol and Indian number formatting
+    // For Indian Rupee, show whole numbers without decimals
     const formatter = new Intl.NumberFormat('en-IN', {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 0, // Allow no decimal places for whole numbers
+      maximumFractionDigits: 0, // No decimal places for INR
+      minimumFractionDigits: 0,
     });
     return '₹' + formatter.format(amount);
   }
@@ -19,7 +20,7 @@ export function formatCurrency(amount: number, currencyCode: string = 'INR'): st
     style: 'currency',
     currency: codeToUse,
     minimumFractionDigits: 0, // Allow no decimal places for whole numbers
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 0, // Always show whole numbers without decimals
   });
   
   return formatter.format(amount);

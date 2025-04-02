@@ -129,9 +129,9 @@ export default function BudgetProgress({ showManage = true, standalone = false }
                     <p className="text-sm font-medium ml-2">{budget.category}</p>
                   </div>
                   <div className="text-sm">
-                    <span className="font-mono font-medium">${spent.toFixed(0)}</span>
+                    <span className="font-mono font-medium">₹{spent.toFixed(0)}</span>
                     <span className="text-gray-500">/</span>
-                    <span className="text-gray-500 font-mono">${limit.toFixed(0)}</span>
+                    <span className="text-gray-500 font-mono">₹{limit.toFixed(0)}</span>
                   </div>
                 </div>
                 <Progress 

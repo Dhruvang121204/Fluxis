@@ -27,7 +27,7 @@ export default function BalanceOverview() {
   
   // Determine the currency symbol based on user settings
   const getCurrencySymbol = () => {
-    if (!userSettings?.currency) return "$"; // Default to USD
+    if (!userSettings?.currency) return "₹"; // Default to INR
     
     switch(userSettings.currency) {
       case "USD": return "$";
@@ -37,7 +37,7 @@ export default function BalanceOverview() {
       case "JPY": return "¥";
       case "CAD": return "C$";
       case "AUD": return "A$";
-      default: return "$";
+      default: return "₹";
     }
   };
 
@@ -103,7 +103,7 @@ export default function BalanceOverview() {
           {isLoading ? (
             <Skeleton className="h-9 w-40 mx-auto" />
           ) : (
-            <h3 className="text-3xl font-semibold font-mono">{getCurrencySymbol()}{balance.toFixed(2)}</h3>
+            <h3 className="text-3xl font-semibold font-mono">{getCurrencySymbol()}{balance.toFixed(0)}</h3>
           )}
         </div>
         
@@ -117,7 +117,7 @@ export default function BalanceOverview() {
               {isLoading ? (
                 <Skeleton className="h-5 w-20" />
               ) : (
-                <p className="text-base font-semibold font-mono">{getCurrencySymbol()}{income.toFixed(2)}</p>
+                <p className="text-base font-semibold font-mono">{getCurrencySymbol()}{income.toFixed(0)}</p>
               )}
             </div>
           </div>
@@ -131,7 +131,7 @@ export default function BalanceOverview() {
               {isLoading ? (
                 <Skeleton className="h-5 w-20" />
               ) : (
-                <p className="text-base font-semibold font-mono">{getCurrencySymbol()}{expenses.toFixed(2)}</p>
+                <p className="text-base font-semibold font-mono">{getCurrencySymbol()}{expenses.toFixed(0)}</p>
               )}
             </div>
           </div>
