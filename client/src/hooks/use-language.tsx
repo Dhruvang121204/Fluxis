@@ -257,20 +257,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const { data: userSettings } = useQuery<UserSettings>({
     queryKey: ["/api/user/settings"],
     refetchOnWindowFocus: true, 
-    refetchInterval: 10000, // Refetch every 10 seconds to ensure settings are current
+    refetchInterval: 5000, // Reduce interval for more responsive updates
     staleTime: 0, // Always refetch to make sure we get the latest settings
   });
 
   useEffect(() => {
     if (userSettings?.language) {
-      // Ensure we set the language immediately when settings change
+      // Log the language change for debugging
       console.log("Language changed to:", userSettings.language);
       
-      if (currentLanguage !== userSettings.language) {
-        // Force a full page refresh to apply language changes throughout the app
-        window.location.reload();
-      }
-      
+      // Update the language state
       setCurrentLanguage(userSettings.language);
       
       // Also update the document language for screenreaders and other tools
@@ -279,7 +275,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       // Set a data attribute on the body for CSS styling based on language
       document.documentElement.setAttribute('data-language', userSettings.language);
     }
-  }, [userSettings, currentLanguage]);
+  }, [userSettings]);
 
   const translate = (key: string) => {
     // Fall back to English if the key doesn't exist in the current language

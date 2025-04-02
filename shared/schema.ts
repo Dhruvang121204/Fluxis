@@ -31,14 +31,23 @@ export const transactions = pgTable("transactions", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertTransactionSchema = createInsertSchema(transactions).pick({
-  userId: true,
-  type: true,
-  amount: true,
-  description: true,
-  category: true,
-  date: true,
-});
+// Create the base schema from the table definition
+const baseTransactionSchema = createInsertSchema(transactions);
+
+// Create a custom schema that allows amount to be either number or string
+export const insertTransactionSchema = baseTransactionSchema
+  .extend({
+    // Override the amount field to accept both number and string
+    amount: z.union([z.number(), z.string()]),
+  })
+  .pick({
+    userId: true,
+    type: true,
+    amount: true,
+    description: true,
+    category: true,
+    date: true,
+  });
 
 // Budget model
 export const budgets = pgTable("budgets", {
@@ -50,12 +59,21 @@ export const budgets = pgTable("budgets", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertBudgetSchema = createInsertSchema(budgets).pick({
-  userId: true,
-  category: true,
-  amount: true,
-  period: true,
-});
+// Create the base schema from the table definition
+const baseBudgetSchema = createInsertSchema(budgets);
+
+// Create a custom schema that allows amount to be either number or string
+export const insertBudgetSchema = baseBudgetSchema
+  .extend({
+    // Override the amount field to accept both number and string
+    amount: z.union([z.number(), z.string()]),
+  })
+  .pick({
+    userId: true,
+    category: true,
+    amount: true,
+    period: true,
+  });
 
 // Financial goal model
 export const financialGoals = pgTable("financial_goals", {
@@ -68,13 +86,23 @@ export const financialGoals = pgTable("financial_goals", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertFinancialGoalSchema = createInsertSchema(financialGoals).pick({
-  userId: true,
-  name: true,
-  targetAmount: true,
-  currentAmount: true,
-  targetDate: true,
-});
+// Create the base schema from the table definition
+const baseFinancialGoalSchema = createInsertSchema(financialGoals);
+
+// Create a custom schema that allows amount fields to be either number or string
+export const insertFinancialGoalSchema = baseFinancialGoalSchema
+  .extend({
+    // Override the amount fields to accept both number and string
+    targetAmount: z.union([z.number(), z.string()]),
+    currentAmount: z.union([z.number(), z.string()]),
+  })
+  .pick({
+    userId: true,
+    name: true,
+    targetAmount: true,
+    currentAmount: true,
+    targetDate: true,
+  });
 
 // Category model
 export const categories = pgTable("categories", {
