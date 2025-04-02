@@ -62,10 +62,10 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
     queryKey: ["/api/user/settings"],
   });
   
-  // Get currency symbol using our utility function
+  // Get currency symbol using our utility function (default to INR)
   const currencySymbol = userSettings?.currency 
     ? getCurrencySymbol(userSettings.currency) 
-    : "$";
+    : "₹";
 
   const form = useForm<BudgetFormValues>({
     resolver: zodResolver(budgetSchema),
@@ -90,7 +90,7 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
   const addBudgetMutation = useMutation({
     mutationFn: async (data: BudgetFormValues) => {
       // Just use the current userSettings directly since we've already loaded it
-      const currencyCode = userSettings?.currency || 'USD';
+      const currencyCode = userSettings?.currency || 'INR';
       
       // Parse the input amount string to a number with our utility function
       const numericAmount = parseCurrencyString(data.amount, currencyCode);

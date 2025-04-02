@@ -11,7 +11,7 @@ type LanguageContextType = {
 const translations: Record<string, Record<string, string>> = {
   en: {
     // General
-    "appName": "Fluxix",
+    "appName": "Fluxis",
     "loading": "Loading...",
     "error": "Error",
     "save": "Save",
@@ -111,7 +111,7 @@ const translations: Record<string, Record<string, string>> = {
   },
   hi: {
     // General
-    "appName": "फ्लक्सिक्स",
+    "appName": "फ्लक्सिस",
     "loading": "लोड हो रहा है...",
     "error": "त्रुटि",
     "save": "सहेजें",
@@ -211,7 +211,7 @@ const translations: Record<string, Record<string, string>> = {
   },
   es: {
     // General
-    "appName": "Fluxix",
+    "appName": "Fluxis",
     "loading": "Cargando...",
     "error": "Error",
     "save": "Guardar",

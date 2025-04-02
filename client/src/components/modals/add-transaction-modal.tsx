@@ -65,10 +65,10 @@ export default function AddTransactionModal({ isOpen, onClose }: AddTransactionM
     queryKey: ["/api/user/settings"],
   });
   
-  // Use the currency utility to get the currency symbol
+  // Use the currency utility to get the currency symbol (default to INR)
   const currencySymbol = userSettings?.currency 
     ? getCurrencySymbol(userSettings.currency) 
-    : "$";
+    : "₹";
 
   const form = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionSchema),
@@ -103,7 +103,7 @@ export default function AddTransactionModal({ isOpen, onClose }: AddTransactionM
   const addTransactionMutation = useMutation({
     mutationFn: async (data: TransactionFormValues) => {
       // Just use the current userSettings directly since we've already loaded it
-      const currencyCode = userSettings?.currency || 'USD';
+      const currencyCode = userSettings?.currency || 'INR';
       
       // Parse the input amount string to a number
       const numericAmount = parseCurrencyString(data.amount, currencyCode);
