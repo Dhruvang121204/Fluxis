@@ -11,6 +11,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { subMonths } from "date-fns";
+import { getCurrencySymbol } from "@/lib/currency";
 
 export default function BalanceOverview() {
   const [timeframe, setTimeframe] = useState("month");
@@ -25,21 +26,8 @@ export default function BalanceOverview() {
   
   const isLoading = transactionsLoading || settingsLoading;
   
-  // Determine the currency symbol based on user settings
-  const getCurrencySymbol = () => {
-    if (!userSettings?.currency) return "₹"; // Default to INR
-    
-    switch(userSettings.currency) {
-      case "USD": return "$";
-      case "EUR": return "€";
-      case "GBP": return "£";
-      case "INR": return "₹";
-      case "JPY": return "¥";
-      case "CAD": return "C$";
-      case "AUD": return "A$";
-      default: return "₹";
-    }
-  };
+  // Get the currency symbol from the settings
+  const currencySymbol = getCurrencySymbol(userSettings?.currency || 'INR');
 
   const getFilteredTransactions = () => {
     if (!transactions) return [];
@@ -103,7 +91,7 @@ export default function BalanceOverview() {
           {isLoading ? (
             <Skeleton className="h-9 w-40 mx-auto" />
           ) : (
-            <h3 className="text-3xl font-semibold font-mono">{getCurrencySymbol()}{balance.toFixed(0)}</h3>
+            <h3 className="text-3xl font-semibold font-mono">{currencySymbol}{balance.toFixed(0)}</h3>
           )}
         </div>
         
@@ -117,7 +105,7 @@ export default function BalanceOverview() {
               {isLoading ? (
                 <Skeleton className="h-5 w-20" />
               ) : (
-                <p className="text-base font-semibold font-mono">{getCurrencySymbol()}{income.toFixed(0)}</p>
+                <p className="text-base font-semibold font-mono">{currencySymbol}{income.toFixed(0)}</p>
               )}
             </div>
           </div>
@@ -131,7 +119,7 @@ export default function BalanceOverview() {
               {isLoading ? (
                 <Skeleton className="h-5 w-20" />
               ) : (
-                <p className="text-base font-semibold font-mono">{getCurrencySymbol()}{expenses.toFixed(0)}</p>
+                <p className="text-base font-semibold font-mono">{currencySymbol}{expenses.toFixed(0)}</p>
               )}
             </div>
           </div>

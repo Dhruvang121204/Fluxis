@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { Transaction, Budget } from "@shared/schema";
+import { Transaction, Budget, UserSettings } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { useLocation } from "wouter";
+import { getCurrencySymbol } from "@/lib/currency";
 import { 
   Utensils, 
   ShoppingBag, 
@@ -32,8 +33,12 @@ export default function BudgetProgress({ showManage = true, standalone = false }
   const { data: transactions, isLoading: loadingTransactions } = useQuery<Transaction[]>({
     queryKey: ["/api/transactions"],
   });
+  
+  const { data: userSettings, isLoading: loadingSettings } = useQuery<UserSettings>({
+    queryKey: ["/api/user/settings"],
+  });
 
-  const isLoading = loadingBudgets || loadingTransactions;
+  const isLoading = loadingBudgets || loadingTransactions || loadingSettings;
 
   // Get current month's expenses for each budget category
   const getCategorySpending = (category: string) => {
@@ -129,9 +134,9 @@ export default function BudgetProgress({ showManage = true, standalone = false }
                     <p className="text-sm font-medium ml-2">{budget.category}</p>
                   </div>
                   <div className="text-sm">
-                    <span className="font-mono font-medium">₹{spent.toFixed(0)}</span>
+                    <span className="font-mono font-medium">{getCurrencySymbol(userSettings?.currency || 'INR')}{spent.toFixed(0)}</span>
                     <span className="text-gray-500">/</span>
-                    <span className="text-gray-500 font-mono">₹{limit.toFixed(0)}</span>
+                    <span className="text-gray-500 font-mono">{getCurrencySymbol(userSettings?.currency || 'INR')}{limit.toFixed(0)}</span>
                   </div>
                 </div>
                 <Progress 

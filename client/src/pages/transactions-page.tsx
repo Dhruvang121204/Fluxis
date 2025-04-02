@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import AppShell from "@/components/layout/app-shell";
 import AddTransactionModal from "@/components/modals/add-transaction-modal";
-import { Transaction } from "@shared/schema";
+import { Transaction, UserSettings } from "@shared/schema";
+import { getCurrencySymbol } from "@/lib/currency";
 import {
   Card,
   CardContent,
@@ -101,9 +102,15 @@ export default function TransactionsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
   
-  const { data: transactions, isLoading } = useQuery<Transaction[]>({
+  const { data: transactions, isLoading: transactionsLoading } = useQuery<Transaction[]>({
     queryKey: ["/api/transactions"],
   });
+  
+  const { data: userSettings, isLoading: settingsLoading } = useQuery<UserSettings>({
+    queryKey: ["/api/user/settings"],
+  });
+  
+  const isLoading = transactionsLoading || settingsLoading;
 
   const handleDeleteTransaction = async (id: number) => {
     try {
@@ -239,7 +246,7 @@ export default function TransactionsPage() {
                           : 'text-danger-500'
                       }`}>
                         {transaction.type === 'income' ? '+' : '-'}
-                        ${Number(transaction.amount).toFixed(2)}
+                        {getCurrencySymbol(userSettings?.currency || 'INR')}{Number(transaction.amount).toFixed(0)}
                       </p>
                       <Button 
                         variant="ghost" 
