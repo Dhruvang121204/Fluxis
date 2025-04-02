@@ -37,15 +37,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/transactions", requireAuth, async (req, res) => {
     try {
       const userId = req.user!.id;
-      const result = insertTransactionSchema.safeParse({ ...req.body, userId });
+      
+      // Convert date string to Date object if needed
+      let transactionData = { ...req.body, userId };
+      if (typeof transactionData.date === 'string') {
+        transactionData.date = new Date(transactionData.date);
+      }
+      
+      // Parse with more detailed error logging
+      const result = insertTransactionSchema.safeParse(transactionData);
       
       if (!result.success) {
-        return res.status(400).json({ message: "Invalid transaction data" });
+        console.log("Transaction validation error:", result.error);
+        return res.status(400).json({ 
+          message: "Invalid transaction data", 
+          errors: result.error.errors 
+        });
       }
       
       const transaction = await storage.createTransaction(result.data);
       res.status(201).json(transaction);
     } catch (error) {
+      console.error("Transaction creation error:", error);
       res.status(500).json({ message: "Failed to create transaction" });
     }
   });
@@ -107,15 +120,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/budgets", requireAuth, async (req, res) => {
     try {
       const userId = req.user!.id;
-      const result = insertBudgetSchema.safeParse({ ...req.body, userId });
+      
+      // Handle amount conversion if needed
+      let budgetData = { ...req.body, userId };
+      if (typeof budgetData.amount === 'string') {
+        budgetData.amount = parseFloat(budgetData.amount);
+      }
+      
+      // Parse with more detailed error logging
+      const result = insertBudgetSchema.safeParse(budgetData);
       
       if (!result.success) {
-        return res.status(400).json({ message: "Invalid budget data" });
+        console.log("Budget validation error:", result.error);
+        return res.status(400).json({ 
+          message: "Invalid budget data", 
+          errors: result.error.errors 
+        });
       }
       
       const budget = await storage.createBudget(result.data);
       res.status(201).json(budget);
     } catch (error) {
+      console.error("Budget creation error:", error);
       res.status(500).json({ message: "Failed to create budget" });
     }
   });

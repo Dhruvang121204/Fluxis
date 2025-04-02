@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useLanguage } from "@/hooks/use-language";
 import { Redirect } from "wouter";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -57,6 +58,7 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
   const { user, loginMutation, registerMutation } = useAuth();
+  const { translate } = useLanguage();
   
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -109,8 +111,8 @@ export default function AuthPage() {
           <CardContent>
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "login" | "register")}>
               <TabsList className="grid w-full grid-cols-2 mb-4">
-                <TabsTrigger value="login">Sign In</TabsTrigger>
-                <TabsTrigger value="register">Create Account</TabsTrigger>
+                <TabsTrigger value="login">{translate("login")}</TabsTrigger>
+                <TabsTrigger value="register">{translate("register")}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="login">

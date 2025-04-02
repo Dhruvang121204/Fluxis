@@ -7,6 +7,7 @@ import {
   FileText,
   Bot
 } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 
 interface BottomNavigationProps {
   activePage: "home" | "transactions" | "budget" | "finance-gpt" | "reports" | "settings";
@@ -14,14 +15,15 @@ interface BottomNavigationProps {
 
 export default function BottomNavigation({ activePage }: BottomNavigationProps) {
   const [_, setLocation] = useLocation();
+  const { translate } = useLanguage();
 
   const navItems = [
-    { name: "Home", icon: Home, route: "/", key: "home" },
-    { name: "Transactions", icon: FileText, route: "/transactions", key: "transactions" },
-    { name: "Budget", icon: BarChart2, route: "/budget", key: "budget" },
-    { name: "FinanceGPT", icon: Bot, route: "/finance-gpt", key: "finance-gpt" },
-    { name: "Reports", icon: PieChart, route: "/reports", key: "reports" },
-    { name: "Settings", icon: Settings, route: "/settings", key: "settings" },
+    { name: translate("home"), icon: Home, route: "/", key: "home" },
+    { name: translate("transactions"), icon: FileText, route: "/transactions", key: "transactions" },
+    { name: translate("budget"), icon: BarChart2, route: "/budget", key: "budget" },
+    { name: translate("financeGpt"), icon: Bot, route: "/finance-gpt", key: "finance-gpt" },
+    { name: translate("reports"), icon: PieChart, route: "/reports", key: "reports" },
+    { name: translate("settings"), icon: Settings, route: "/settings", key: "settings" },
   ];
 
   return (
