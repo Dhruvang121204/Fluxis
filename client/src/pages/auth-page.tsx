@@ -291,11 +291,11 @@ export default function AuthPage() {
             
             <div className="flex items-start space-x-3">
               <div className="bg-success-100 p-2 rounded-lg">
-                <i className="ri-funds-box-line text-xl text-success-600"></i>
+                <i className="ri-tools-line text-xl text-success-600"></i>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">{translate("budgetManagement") || "Set & Manage Budgets"}</h3>
-                <p className="text-gray-600">Stay on top of your spending with custom budgets</p>
+                <h3 className="font-medium text-gray-800">{translate("financialTools") || "Financial Calculators"}</h3>
+                <p className="text-gray-600">Use powerful tools to plan your financial future</p>
               </div>
             </div>
             
@@ -316,6 +316,16 @@ export default function AuthPage() {
               <div>
                 <h3 className="font-medium text-gray-800">{translate("askFinanceGpt") || "AI-Powered Recommendations"}</h3>
                 <p className="text-gray-600">Get smart insights to improve your financial health</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start space-x-3">
+              <div className="bg-info-100 p-2 rounded-lg">
+                <i className="ri-notification-3-line text-xl text-info-600"></i>
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-800">{translate("notifications") || "Smart Notifications"}</h3>
+                <p className="text-gray-600">Stay updated with important financial alerts</p>
               </div>
             </div>
           </div>
