@@ -1,29 +1,15 @@
 // Currency formatting utilities
 
-// Format a number to a currency string based on the currency code
+// Format a number to a currency string (always as INR)
 export function formatCurrency(amount: number, currencyCode: string = 'INR'): string {
-  // Default to INR if no currency code provided
-  const codeToUse = currencyCode || 'INR';
-  
-  // Special case for INR to ensure proper formatting (₹ symbol shows correctly)
-  if (codeToUse === 'INR') {
-    // Manually format INR with ₹ symbol and Indian number formatting
-    // For Indian Rupee, show whole numbers without decimals
-    const formatter = new Intl.NumberFormat('en-IN', {
-      maximumFractionDigits: 0, // No decimal places for INR
-      minimumFractionDigits: 0,
-    });
-    return '₹' + formatter.format(amount);
-  }
-  
-  const formatter = new Intl.NumberFormat(getCurrencyLocale(codeToUse), {
-    style: 'currency',
-    currency: codeToUse,
-    minimumFractionDigits: 0, // Allow no decimal places for whole numbers
-    maximumFractionDigits: 0, // Always show whole numbers without decimals
+  // Always use INR formatting regardless of provided currency code
+  // Manually format INR with ₹ symbol and Indian number formatting
+  // For Indian Rupee, show whole numbers without decimals
+  const formatter = new Intl.NumberFormat('en-IN', {
+    maximumFractionDigits: 0, // No decimal places for INR
+    minimumFractionDigits: 0,
   });
-  
-  return formatter.format(amount);
+  return '₹' + formatter.format(amount);
 }
 
 // Get the locale for a currency code to use in formatting
@@ -41,22 +27,10 @@ function getCurrencyLocale(currencyCode: string): string {
   return currencyLocaleMap[currencyCode] || 'en-US';
 }
 
-// Get currency symbol for a currency code
+// Get currency symbol (always returns ₹ for INR)
 export function getCurrencySymbol(currencyCode: string = 'INR'): string {
-  // Default to INR if no currency code provided
-  const codeToUse = currencyCode || 'INR';
-  
-  const currencySymbolMap: Record<string, string> = {
-    'USD': '$',
-    'EUR': '€',
-    'GBP': '£',
-    'INR': '₹',
-    'JPY': '¥',
-    'CAD': 'C$',
-    'AUD': 'A$',
-  };
-  
-  return currencySymbolMap[codeToUse] || '₹';
+  // Always return the Indian Rupee symbol regardless of the currency code provided
+  return '₹';
 }
 
 // Parse a currency string to a number

@@ -236,7 +236,7 @@ export default function ReportsPage() {
                             ))}
                           </Pie>
                           <Tooltip 
-                            formatter={(value: number) => [`$${value.toFixed(2)}`, 'Amount']}
+                            formatter={(value: number) => [`₹${value.toFixed(0)}`, 'Amount']}
                           />
                         </PieChart>
                       </ResponsiveContainer>
@@ -254,7 +254,7 @@ export default function ReportsPage() {
                               ></div>
                               <span className="text-sm">{category.name}</span>
                             </div>
-                            <span className="text-sm font-mono">${category.value.toFixed(2)}</span>
+                            <span className="text-sm font-mono">₹{category.value.toFixed(0)}</span>
                           </div>
                         ))}
                       </div>
@@ -281,10 +281,10 @@ export default function ReportsPage() {
                         />
                         <YAxis 
                           tick={{ fontSize: 12 }}
-                          tickFormatter={(value) => `$${value}`}
+                          tickFormatter={(value) => `₹${value}`}
                         />
                         <Tooltip 
-                          formatter={(value: number) => [`$${value.toFixed(2)}`, 'Amount']}
+                          formatter={(value: number) => [`₹${value.toFixed(0)}`, 'Amount']}
                         />
                         <Line 
                           type="monotone" 
@@ -312,10 +312,10 @@ export default function ReportsPage() {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" />
                         <YAxis
-                          tickFormatter={(value) => `$${value}`}
+                          tickFormatter={(value) => `₹${value}`}
                         />
                         <Tooltip 
-                          formatter={(value: number) => [`$${value.toFixed(2)}`, 'Amount']}
+                          formatter={(value: number) => [`₹${value.toFixed(0)}`, 'Amount']}
                         />
                         <Legend />
                         <Bar 
@@ -342,15 +342,15 @@ export default function ReportsPage() {
               <div className="p-4 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-700 mb-1">Total {reportType === "expense" ? "Expenses" : "Income"}</p>
                 <p className="text-2xl font-semibold text-blue-900">
-                  ${filteredTransactions.reduce((sum, t) => sum + Number(t.amount), 0).toFixed(2)}
+                  ₹{filteredTransactions.reduce((sum, t) => sum + Number(t.amount), 0).toFixed(0)}
                 </p>
               </div>
               
               <div className="p-4 bg-green-50 rounded-lg">
                 <p className="text-sm text-green-700 mb-1">Average per Day</p>
                 <p className="text-2xl font-semibold text-green-900">
-                  ${(filteredTransactions.reduce((sum, t) => sum + Number(t.amount), 0) / 
-                     Math.max(1, Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)))).toFixed(2)}
+                  ₹{(filteredTransactions.reduce((sum, t) => sum + Number(t.amount), 0) / 
+                     Math.max(1, Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)))).toFixed(0)}
                 </p>
               </div>
               

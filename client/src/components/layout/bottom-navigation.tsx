@@ -33,12 +33,12 @@ export default function BottomNavigation({ activePage }: BottomNavigationProps) 
           <button
             key={item.key}
             className={`py-2 flex flex-col items-center flex-grow ${
-              activePage === item.key ? "bottom-nav-item active" : "text-gray-500 dark:text-gray-400"
+              activePage === item.key ? "text-primary" : "text-gray-500 dark:text-gray-400"
             }`}
             onClick={() => setLocation(item.route)}
           >
             <item.icon className={`h-5 w-5 ${
-              activePage === item.key ? "bottom-nav-item active" : "text-gray-500 dark:text-gray-400"
+              activePage === item.key ? "text-primary" : "text-gray-500 dark:text-gray-400"
             }`} />
             <span className="text-xs mt-1">{item.name}</span>
           </button>
