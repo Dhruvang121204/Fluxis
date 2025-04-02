@@ -7,7 +7,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Category, UserSettings } from "@shared/schema";
 import { useLanguage } from "@/hooks/use-language";
-import { getCurrencySymbol } from "@/lib/currency";
+import { getCurrencySymbol, parseCurrencyString } from "@/lib/currency";
 
 import {
   Dialog,
@@ -89,11 +89,13 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
 
   const addBudgetMutation = useMutation({
     mutationFn: async (data: BudgetFormValues) => {
-      // Ensure the amount is properly parsed as a number, handling currency format
-      const cleanAmount = data.amount.replace(/[^\d.-]/g, '');
-      const numericAmount = parseFloat(cleanAmount);
+      // Just use the current userSettings directly since we've already loaded it
+      const currencyCode = userSettings?.currency || 'USD';
       
-      if (isNaN(numericAmount)) {
+      // Parse the input amount string to a number with our utility function
+      const numericAmount = parseCurrencyString(data.amount, currencyCode);
+      
+      if (numericAmount <= 0) {
         throw new Error(translate("invalidAmountError") || "Invalid amount format");
       }
       

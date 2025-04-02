@@ -253,23 +253,33 @@ export const LanguageContext = createContext<LanguageContextType>({
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [currentLanguage, setCurrentLanguage] = useState<string>("en");
 
-  // Get user settings to set the language
+  // Get user settings to set the language with refetching on window focus
   const { data: userSettings } = useQuery<UserSettings>({
     queryKey: ["/api/user/settings"],
-    // No need to invalidate this on change as it will be handled by the settings mutation
-    staleTime: 60 * 60 * 1000, // 1 hour
+    refetchOnWindowFocus: true, 
+    refetchInterval: 10000, // Refetch every 10 seconds to ensure settings are current
+    staleTime: 0, // Always refetch to make sure we get the latest settings
   });
 
   useEffect(() => {
     if (userSettings?.language) {
       // Ensure we set the language immediately when settings change
       console.log("Language changed to:", userSettings.language);
+      
+      if (currentLanguage !== userSettings.language) {
+        // Force a full page refresh to apply language changes throughout the app
+        window.location.reload();
+      }
+      
       setCurrentLanguage(userSettings.language);
       
       // Also update the document language for screenreaders and other tools
       document.documentElement.lang = userSettings.language;
+      
+      // Set a data attribute on the body for CSS styling based on language
+      document.documentElement.setAttribute('data-language', userSettings.language);
     }
-  }, [userSettings]);
+  }, [userSettings, currentLanguage]);
 
   const translate = (key: string) => {
     // Fall back to English if the key doesn't exist in the current language

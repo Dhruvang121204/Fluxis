@@ -38,11 +38,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user!.id;
       
-      // Convert date string to Date object if needed
+      // Clone the request body and add the user ID
       let transactionData = { ...req.body, userId };
+      
+      // Convert date string to Date object if needed
       if (typeof transactionData.date === 'string') {
         transactionData.date = new Date(transactionData.date);
       }
+      
+      // Handle amount conversion, ensuring it's a valid number
+      if (typeof transactionData.amount === 'string') {
+        // Clean any currency symbols, commas, etc.
+        const cleanAmount = transactionData.amount.replace(/[^\d.-]/g, '');
+        const parsedAmount = parseFloat(cleanAmount);
+        
+        if (isNaN(parsedAmount)) {
+          return res.status(400).json({ 
+            message: "Invalid amount format. Please enter a valid number."
+          });
+        }
+        
+        transactionData.amount = parsedAmount;
+      }
+      
+      // Log the transaction data for debugging
+      console.log("Processing transaction:", transactionData);
       
       // Parse with more detailed error logging
       const result = insertTransactionSchema.safeParse(transactionData);
@@ -121,11 +141,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user!.id;
       
-      // Handle amount conversion if needed
+      // Clone the request body and add the user ID
       let budgetData = { ...req.body, userId };
+      
+      // Handle amount conversion, ensuring it's a valid number
       if (typeof budgetData.amount === 'string') {
-        budgetData.amount = parseFloat(budgetData.amount);
+        // Clean any currency symbols, commas, etc.
+        const cleanAmount = budgetData.amount.replace(/[^\d.-]/g, '');
+        const parsedAmount = parseFloat(cleanAmount);
+        
+        if (isNaN(parsedAmount)) {
+          return res.status(400).json({ 
+            message: "Invalid amount format. Please enter a valid number."
+          });
+        }
+        
+        budgetData.amount = parsedAmount;
       }
+      
+      // Log the budget data for debugging
+      console.log("Processing budget:", budgetData);
       
       // Parse with more detailed error logging
       const result = insertBudgetSchema.safeParse(budgetData);
@@ -160,15 +195,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/goals", requireAuth, async (req, res) => {
     try {
       const userId = req.user!.id;
-      const result = insertFinancialGoalSchema.safeParse({ ...req.body, userId });
+      
+      // Clone the request body and add the user ID
+      let goalData = { ...req.body, userId };
+      
+      // Handle targetAmount conversion
+      if (typeof goalData.targetAmount === 'string') {
+        const cleanAmount = goalData.targetAmount.replace(/[^\d.-]/g, '');
+        const parsedAmount = parseFloat(cleanAmount);
+        
+        if (isNaN(parsedAmount)) {
+          return res.status(400).json({ 
+            message: "Invalid target amount format. Please enter a valid number."
+          });
+        }
+        
+        goalData.targetAmount = parsedAmount;
+      }
+      
+      // Handle currentAmount conversion
+      if (typeof goalData.currentAmount === 'string') {
+        const cleanAmount = goalData.currentAmount.replace(/[^\d.-]/g, '');
+        const parsedAmount = parseFloat(cleanAmount);
+        
+        if (isNaN(parsedAmount)) {
+          return res.status(400).json({ 
+            message: "Invalid current amount format. Please enter a valid number."
+          });
+        }
+        
+        goalData.currentAmount = parsedAmount;
+      }
+      
+      // Log the goal data for debugging
+      console.log("Processing financial goal:", goalData);
+      
+      // Parse with more detailed error logging
+      const result = insertFinancialGoalSchema.safeParse(goalData);
       
       if (!result.success) {
-        return res.status(400).json({ message: "Invalid financial goal data" });
+        console.log("Financial goal validation error:", result.error);
+        return res.status(400).json({ 
+          message: "Invalid financial goal data", 
+          errors: result.error.errors 
+        });
       }
       
       const goal = await storage.createFinancialGoal(result.data);
       res.status(201).json(goal);
     } catch (error) {
+      console.error("Financial goal creation error:", error);
       res.status(500).json({ message: "Failed to create financial goal" });
     }
   });
