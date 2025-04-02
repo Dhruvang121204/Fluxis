@@ -6,6 +6,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Category, UserSettings } from "@shared/schema";
+import { useLanguage } from "@/hooks/use-language";
+import { getCurrencySymbol } from "@/lib/currency";
 
 import {
   Dialog,
@@ -50,6 +52,7 @@ interface AddBudgetModalProps {
 
 export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps) {
   const { toast } = useToast();
+  const { translate } = useLanguage();
   
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
@@ -59,21 +62,10 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
     queryKey: ["/api/user/settings"],
   });
   
-  // Determine the currency symbol based on user settings
-  const getCurrencySymbol = () => {
-    if (!userSettings?.currency) return "$"; // Default to USD
-    
-    switch(userSettings.currency) {
-      case "USD": return "$";
-      case "EUR": return "€";
-      case "GBP": return "£";
-      case "INR": return "₹";
-      case "JPY": return "¥";
-      case "CAD": return "C$";
-      case "AUD": return "A$";
-      default: return "$";
-    }
-  };
+  // Get currency symbol using our utility function
+  const currencySymbol = userSettings?.currency 
+    ? getCurrencySymbol(userSettings.currency) 
+    : "$";
 
   const form = useForm<BudgetFormValues>({
     resolver: zodResolver(budgetSchema),
@@ -97,24 +89,32 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
 
   const addBudgetMutation = useMutation({
     mutationFn: async (data: BudgetFormValues) => {
+      // Ensure the amount is properly parsed as a number, handling currency format
+      const cleanAmount = data.amount.replace(/[^\d.-]/g, '');
+      const numericAmount = parseFloat(cleanAmount);
+      
+      if (isNaN(numericAmount)) {
+        throw new Error(translate("invalidAmountError") || "Invalid amount format");
+      }
+      
       const res = await apiRequest("POST", "/api/budgets", {
         ...data,
-        amount: Number(data.amount),
+        amount: numericAmount,
       });
       return res.json();
     },
     onSuccess: () => {
       toast({
-        title: "Budget added",
-        description: "Your budget has been added successfully",
+        title: translate("budgetAdded"),
+        description: translate("budgetAddedDesc") || "Your budget has been added successfully",
       });
       queryClient.invalidateQueries({ queryKey: ["/api/budgets"] });
       onClose();
     },
     onError: (error: Error) => {
       toast({
-        title: "Error",
-        description: error.message || "Failed to add budget",
+        title: translate("error"),
+        description: error.message || translate("failedToAddBudget") || "Failed to add budget",
         variant: "destructive",
       });
     },
@@ -133,7 +133,7 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add Budget</DialogTitle>
+          <DialogTitle>{translate("addBudget")}</DialogTitle>
         </DialogHeader>
         
         <Form {...form}>
@@ -143,14 +143,14 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>{translate("category")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder={translate("selectCategory") || "Select category"} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -160,7 +160,7 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
                         </div>
                       ) : expenseCategories.length === 0 ? (
                         <div className="p-2 text-center text-sm text-gray-500">
-                          No categories available
+                          {translate("noCategories") || "No categories available"}
                         </div>
                       ) : (
                         expenseCategories.map((category) => (
@@ -181,19 +181,26 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Budget Limit</FormLabel>
+                  <FormLabel>{translate("budgetLimit")}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500">{getCurrencySymbol()}</span>
+                        <span className="text-gray-500">{currencySymbol}</span>
                       </div>
                       <Input 
-                        type="number" 
+                        type="text"
+                        inputMode="decimal"
                         placeholder="0.00" 
-                        step="0.01"
-                        min="0.01"
                         className="pl-7" 
-                        {...field} 
+                        value={field.value}
+                        onChange={(e) => {
+                          // Allow only numbers, decimal point, and backspace
+                          const value = e.target.value;
+                          const regex = /^[0-9]*\.?[0-9]*$/;
+                          if (regex.test(value) || value === '') {
+                            field.onChange(value);
+                          }
+                        }}
                       />
                     </div>
                   </FormControl>
@@ -207,21 +214,21 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
               name="period"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Time Period</FormLabel>
+                  <FormLabel>{translate("period")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select period" />
+                        <SelectValue placeholder={translate("period")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
-                      <SelectItem value="quarterly">Quarterly</SelectItem>
-                      <SelectItem value="yearly">Yearly</SelectItem>
+                      <SelectItem value="weekly">{translate("weekly")}</SelectItem>
+                      <SelectItem value="monthly">{translate("monthly")}</SelectItem>
+                      <SelectItem value="quarterly">{translate("quarterly")}</SelectItem>
+                      <SelectItem value="yearly">{translate("yearly")}</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -238,10 +245,10 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
                 {addBudgetMutation.isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Adding...
+                    {translate("loading")}
                   </>
                 ) : (
-                  "Add Budget"
+                  translate("addBudget")
                 )}
               </Button>
             </DialogFooter>

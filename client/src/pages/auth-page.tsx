@@ -103,9 +103,9 @@ export default function AuthPage() {
         {/* Left column - Form */}
         <Card className="w-full shadow-md">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold">Fluxix</CardTitle>
+            <CardTitle className="text-2xl font-bold">{translate("appName")}</CardTitle>
             <CardDescription>
-              Manage your personal finances with ease
+              {translate("manageAccount")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -123,9 +123,9 @@ export default function AuthPage() {
                       name="username"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Username</FormLabel>
+                          <FormLabel>{translate("username")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="username" {...field} />
+                            <Input placeholder={translate("username").toLowerCase()} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -136,7 +136,7 @@ export default function AuthPage() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{translate("password")}</FormLabel>
                           <FormControl>
                             <Input type="password" placeholder="••••••••" {...field} />
                           </FormControl>
@@ -156,12 +156,12 @@ export default function AuthPage() {
                                 onCheckedChange={field.onChange}
                               />
                             </FormControl>
-                            <FormLabel className="text-sm cursor-pointer">Remember me</FormLabel>
+                            <FormLabel className="text-sm cursor-pointer">{translate("rememberMe") || "Remember me"}</FormLabel>
                           </FormItem>
                         )}
                       />
                       <a href="#" className="text-sm text-primary hover:underline">
-                        Forgot password?
+                        {translate("forgotPassword")}
                       </a>
                     </div>
                     <Button 
@@ -172,10 +172,10 @@ export default function AuthPage() {
                       {loginMutation.isPending ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Signing in...
+                          {translate("loading")}
                         </>
                       ) : (
-                        "Sign In"
+                        translate("login")
                       )}
                     </Button>
                   </form>
@@ -190,9 +190,9 @@ export default function AuthPage() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name</FormLabel>
+                          <FormLabel>{translate("name")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input placeholder={translate("name")} value={field.value || ""} onChange={field.onChange} onBlur={field.onBlur} ref={field.ref} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -203,9 +203,9 @@ export default function AuthPage() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{translate("email")}</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="email@example.com" {...field} />
+                            <Input type="email" placeholder={translate("email")} value={field.value || ""} onChange={field.onChange} onBlur={field.onBlur} ref={field.ref} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -216,9 +216,9 @@ export default function AuthPage() {
                       name="username"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Username</FormLabel>
+                          <FormLabel>{translate("username")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="username" {...field} />
+                            <Input placeholder={translate("username").toLowerCase()} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -229,7 +229,7 @@ export default function AuthPage() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{translate("password")}</FormLabel>
                           <FormControl>
                             <Input type="password" placeholder="••••••••" {...field} />
                           </FormControl>
@@ -242,7 +242,7 @@ export default function AuthPage() {
                       name="passwordConfirm"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Confirm Password</FormLabel>
+                          <FormLabel>{translate("passwordConfirm") || "Confirm Password"}</FormLabel>
                           <FormControl>
                             <Input type="password" placeholder="••••••••" {...field} />
                           </FormControl>
@@ -258,10 +258,10 @@ export default function AuthPage() {
                       {registerMutation.isPending ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Creating account...
+                          {translate("loading")}
                         </>
                       ) : (
-                        "Create Account"
+                        translate("register")
                       )}
                     </Button>
                   </form>
@@ -274,7 +274,7 @@ export default function AuthPage() {
         {/* Right column - Hero */}
         <div className="hidden md:flex flex-col space-y-6">
           <div>
-            <h1 className="text-4xl font-bold text-gray-800">Fluxix</h1>
+            <h1 className="text-4xl font-bold text-gray-800">{translate("appName")}</h1>
             <p className="text-xl text-gray-600">Financial Freedom Made Simple</p>
           </div>
           
@@ -284,7 +284,7 @@ export default function AuthPage() {
                 <i className="ri-line-chart-line text-xl text-primary-600"></i>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">Track Your Finances</h3>
+                <h3 className="font-medium text-gray-800">{translate("trackSpending") || "Track Your Finances"}</h3>
                 <p className="text-gray-600">Monitor your income and expenses in one place</p>
               </div>
             </div>
@@ -294,7 +294,7 @@ export default function AuthPage() {
                 <i className="ri-funds-box-line text-xl text-success-600"></i>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">Set & Manage Budgets</h3>
+                <h3 className="font-medium text-gray-800">{translate("budgetManagement") || "Set & Manage Budgets"}</h3>
                 <p className="text-gray-600">Stay on top of your spending with custom budgets</p>
               </div>
             </div>
@@ -304,7 +304,7 @@ export default function AuthPage() {
                 <i className="ri-pie-chart-line text-xl text-warning-600"></i>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">Visual Insights</h3>
+                <h3 className="font-medium text-gray-800">{translate("financialReports") || "Visual Insights"}</h3>
                 <p className="text-gray-600">Understand your finances with detailed reports</p>
               </div>
             </div>
@@ -314,7 +314,7 @@ export default function AuthPage() {
                 <i className="ri-ai-generate text-xl text-primary-600"></i>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">AI-Powered Recommendations</h3>
+                <h3 className="font-medium text-gray-800">{translate("askFinanceGpt") || "AI-Powered Recommendations"}</h3>
                 <p className="text-gray-600">Get smart insights to improve your financial health</p>
               </div>
             </div>

@@ -39,6 +39,8 @@ const translations: Record<string, Record<string, string>> = {
     "logout": "Logout",
     "loginSuccess": "Logged in successfully",
     "registerSuccess": "Registered successfully",
+    "rememberMe": "Remember me",
+    "passwordConfirm": "Confirm Password",
 
     // Transactions
     "addTransaction": "Add Transaction",
@@ -51,6 +53,15 @@ const translations: Record<string, Record<string, string>> = {
     "recentTransactions": "Recent Transactions",
     "noTransactions": "No transactions found",
     "transactionAdded": "Transaction added successfully",
+    "transactionAddedDesc": "Your transaction has been added successfully",
+    "failedToAddTransaction": "Failed to add transaction",
+    "invalidAmountError": "Invalid amount format",
+    "type": "Transaction Type",
+    "optional": "Optional",
+    "incomeExamples": "Monthly salary, Freelance work...",
+    "expenseExamples": "Grocery shopping, Rent payment...",
+    "selectCategory": "Select category",
+    "noCategories": "No categories available",
 
     // Budget
     "addBudget": "Add Budget",
@@ -62,6 +73,8 @@ const translations: Record<string, Record<string, string>> = {
     "yearly": "Yearly",
     "noBudgets": "No budgets found",
     "budgetAdded": "Budget added successfully",
+    "budgetAddedDesc": "Your budget has been added successfully",
+    "failedToAddBudget": "Failed to add budget",
     "budgetManagement": "Budget Management",
     "trackSpending": "Track and control your spending",
 
@@ -126,6 +139,8 @@ const translations: Record<string, Record<string, string>> = {
     "logout": "लॉगआउट",
     "loginSuccess": "सफलतापूर्वक लॉगिन हुआ",
     "registerSuccess": "सफलतापूर्वक पंजीकृत हुआ",
+    "rememberMe": "मुझे याद रखें",
+    "passwordConfirm": "पासवर्ड की पुष्टि करें",
 
     // Transactions
     "addTransaction": "लेनदेन जोड़ें",
@@ -138,6 +153,15 @@ const translations: Record<string, Record<string, string>> = {
     "recentTransactions": "हाल के लेनदेन",
     "noTransactions": "कोई लेनदेन नहीं मिला",
     "transactionAdded": "लेनदेन सफलतापूर्वक जोड़ा गया",
+    "transactionAddedDesc": "आपका लेनदेन सफलतापूर्वक जोड़ा गया है",
+    "failedToAddTransaction": "लेनदेन जोड़ने में विफल",
+    "invalidAmountError": "अमान्य राशि प्रारूप",
+    "type": "लेनदेन प्रकार",
+    "optional": "वैकल्पिक",
+    "incomeExamples": "मासिक वेतन, फ्रीलांस कार्य...",
+    "expenseExamples": "किराना सामान, किराया भुगतान...",
+    "selectCategory": "श्रेणी चुनें",
+    "noCategories": "कोई श्रेणी उपलब्ध नहीं",
 
     // Budget
     "addBudget": "बजट जोड़ें",
@@ -149,6 +173,8 @@ const translations: Record<string, Record<string, string>> = {
     "yearly": "वार्षिक",
     "noBudgets": "कोई बजट नहीं मिला",
     "budgetAdded": "बजट सफलतापूर्वक जोड़ा गया",
+    "budgetAddedDesc": "आपका बजट सफलतापूर्वक जोड़ा गया है",
+    "failedToAddBudget": "बजट जोड़ने में विफल",
     "budgetManagement": "बजट प्रबंधन",
     "trackSpending": "अपने खर्च को ट्रैक और नियंत्रित करें",
 
@@ -236,7 +262,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (userSettings?.language) {
+      // Ensure we set the language immediately when settings change
+      console.log("Language changed to:", userSettings.language);
       setCurrentLanguage(userSettings.language);
+      
+      // Also update the document language for screenreaders and other tools
+      document.documentElement.lang = userSettings.language;
     }
   }, [userSettings]);
 
