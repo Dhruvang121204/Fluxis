@@ -29,20 +29,20 @@ export default function Navbar({ title, subtitle }: NavbarProps) {
   };
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-primary text-primary-foreground shadow-md">
       <div className="px-4 py-4 flex justify-between items-center">
         <div>
-          <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
-          {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+          <h1 className="text-xl font-semibold">{title}</h1>
+          {subtitle && <p className="text-sm opacity-90">{subtitle}</p>}
         </div>
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="icon" aria-label="Notifications">
-            <Bell className="h-5 w-5 text-gray-700" />
+          <Button variant="ghost" size="icon" aria-label="Notifications" className="text-primary-foreground hover:bg-primary/90">
+            <Bell className="h-5 w-5" />
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Profile">
-                <User className="h-5 w-5 text-gray-700" />
+              <Button variant="ghost" size="icon" aria-label="Profile" className="text-primary-foreground hover:bg-primary/90">
+                <User className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

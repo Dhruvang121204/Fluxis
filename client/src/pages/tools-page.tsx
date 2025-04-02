@@ -22,6 +22,12 @@ import {
 import { getCurrencySymbol } from "@/lib/currency";
 import { useQuery } from "@tanstack/react-query";
 import { UserSettings } from "@shared/schema";
+import { 
+  TaxCalculator, 
+  CreditCardCalculator, 
+  InvestmentCalculator, 
+  RetirementCalculator 
+} from "@/components/tools/calculators";
 
 export default function ToolsPage() {
   const { data: userSettings } = useQuery<UserSettings>({
@@ -79,7 +85,7 @@ export default function ToolsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full">Open Tax Calculator</Button>
+              <TaxCalculator currencySymbol={currencySymbol} />
             </CardContent>
           </Card>
           
@@ -94,7 +100,7 @@ export default function ToolsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full">Open Credit Card Calculator</Button>
+              <CreditCardCalculator currencySymbol={currencySymbol} />
             </CardContent>
           </Card>
           
@@ -109,7 +115,7 @@ export default function ToolsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full">Calculate Returns</Button>
+              <InvestmentCalculator currencySymbol={currencySymbol} />
             </CardContent>
           </Card>
           
@@ -124,9 +130,11 @@ export default function ToolsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full">Plan Retirement</Button>
+              <RetirementCalculator currencySymbol={currencySymbol} />
             </CardContent>
           </Card>
+          
+
         </div>
       </div>
     </AppShell>
