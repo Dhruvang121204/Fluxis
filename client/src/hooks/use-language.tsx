@@ -23,7 +23,7 @@ const translations: Record<string, Record<string, string>> = {
     // Navigation
     "home": "Home",
     "transactions": "Transactions",
-    "budget": "Budget",
+    "tools": "Tools",
     "financeGpt": "Finance GPT",
     "reports": "Reports",
     "settings": "Settings",
@@ -123,7 +123,7 @@ const translations: Record<string, Record<string, string>> = {
     // Navigation
     "home": "होम",
     "transactions": "लेनदेन",
-    "budget": "बजट",
+    "tools": "उपकरण",
     "financeGpt": "फाइनेंस जीपीटी",
     "reports": "रिपोर्ट",
     "settings": "सेटिंग्स",
@@ -223,7 +223,7 @@ const translations: Record<string, Record<string, string>> = {
     // Navigation
     "home": "Inicio",
     "transactions": "Transacciones",
-    "budget": "Presupuesto",
+    "tools": "Herramientas",
     "financeGpt": "Finance GPT",
     "reports": "Informes",
     "settings": "Configuración",

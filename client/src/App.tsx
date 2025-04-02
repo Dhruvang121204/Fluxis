@@ -11,17 +11,17 @@ import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
 import HomePage from "@/pages/home-page";
 import TransactionsPage from "@/pages/transactions-page";
-import BudgetPage from "@/pages/budget-page";
 import ReportsPage from "@/pages/reports-page";
 import FinanceGptPage from "@/pages/finance-gpt-page";
 import SettingsPage from "@/pages/settings-page";
+import ToolsPage from "@/pages/tools-page";
 
 function Router() {
   return (
     <Switch>
       <ProtectedRoute path="/" component={HomePage} />
       <ProtectedRoute path="/transactions" component={TransactionsPage} />
-      <ProtectedRoute path="/budget" component={BudgetPage} />
+      <ProtectedRoute path="/tools" component={ToolsPage} />
       <ProtectedRoute path="/finance-gpt" component={FinanceGptPage} />
       <ProtectedRoute path="/reports" component={ReportsPage} />
       <ProtectedRoute path="/settings" component={SettingsPage} />

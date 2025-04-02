@@ -1,7 +1,7 @@
 import { useLocation } from "wouter";
 import { 
   Home, 
-  BarChart2, 
+  Calculator, 
   PieChart, 
   Settings, 
   FileText,
@@ -10,7 +10,7 @@ import {
 import { useLanguage } from "@/hooks/use-language";
 
 interface BottomNavigationProps {
-  activePage: "home" | "transactions" | "budget" | "finance-gpt" | "reports" | "settings";
+  activePage: "home" | "transactions" | "tools" | "finance-gpt" | "reports" | "settings";
 }
 
 export default function BottomNavigation({ activePage }: BottomNavigationProps) {
@@ -20,7 +20,7 @@ export default function BottomNavigation({ activePage }: BottomNavigationProps) 
   const navItems = [
     { name: translate("home"), icon: Home, route: "/", key: "home" },
     { name: translate("transactions"), icon: FileText, route: "/transactions", key: "transactions" },
-    { name: translate("budget"), icon: BarChart2, route: "/budget", key: "budget" },
+    { name: translate("tools"), icon: Calculator, route: "/tools", key: "tools" },
     { name: translate("financeGpt"), icon: Bot, route: "/finance-gpt", key: "finance-gpt" },
     { name: translate("reports"), icon: PieChart, route: "/reports", key: "reports" },
     { name: translate("settings"), icon: Settings, route: "/settings", key: "settings" },

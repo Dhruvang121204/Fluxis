@@ -4,7 +4,6 @@ import AppShell from "@/components/layout/app-shell";
 import BalanceOverview from "@/components/finance/balance-overview";
 import SpendingInsights from "@/components/finance/spending-insights";
 import RecentTransactions from "@/components/finance/recent-transactions";
-import BudgetProgress from "@/components/finance/budget-progress";
 import FinancialInsights from "@/components/finance/financial-insights";
 import FinancialGoals from "@/components/finance/financial-goals";
 import FinanceNews from "@/components/finance/finance-news";
@@ -18,7 +17,7 @@ export default function HomePage() {
   
   return (
     <AppShell
-      title="Fluxix"
+      title="Fluxis"
       subtitle="Financial Freedom Made Simple"
       activePage="home"
     >
