@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Transaction } from "@shared/schema";
+import { Transaction, UserSettings } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
@@ -15,9 +15,31 @@ import { subMonths } from "date-fns";
 export default function BalanceOverview() {
   const [timeframe, setTimeframe] = useState("month");
   
-  const { data: transactions, isLoading } = useQuery<Transaction[]>({
+  const { data: transactions, isLoading: transactionsLoading } = useQuery<Transaction[]>({
     queryKey: ["/api/transactions"],
   });
+  
+  const { data: userSettings, isLoading: settingsLoading } = useQuery<UserSettings>({
+    queryKey: ["/api/user/settings"],
+  });
+  
+  const isLoading = transactionsLoading || settingsLoading;
+  
+  // Determine the currency symbol based on user settings
+  const getCurrencySymbol = () => {
+    if (!userSettings?.currency) return "$"; // Default to USD
+    
+    switch(userSettings.currency) {
+      case "USD": return "$";
+      case "EUR": return "€";
+      case "GBP": return "£";
+      case "INR": return "₹";
+      case "JPY": return "¥";
+      case "CAD": return "C$";
+      case "AUD": return "A$";
+      default: return "$";
+    }
+  };
 
   const getFilteredTransactions = () => {
     if (!transactions) return [];
@@ -81,7 +103,7 @@ export default function BalanceOverview() {
           {isLoading ? (
             <Skeleton className="h-9 w-40 mx-auto" />
           ) : (
-            <h3 className="text-3xl font-semibold font-mono">${balance.toFixed(2)}</h3>
+            <h3 className="text-3xl font-semibold font-mono">{getCurrencySymbol()}{balance.toFixed(2)}</h3>
           )}
         </div>
         
@@ -95,7 +117,7 @@ export default function BalanceOverview() {
               {isLoading ? (
                 <Skeleton className="h-5 w-20" />
               ) : (
-                <p className="text-base font-semibold font-mono">${income.toFixed(2)}</p>
+                <p className="text-base font-semibold font-mono">{getCurrencySymbol()}{income.toFixed(2)}</p>
               )}
             </div>
           </div>
@@ -109,7 +131,7 @@ export default function BalanceOverview() {
               {isLoading ? (
                 <Skeleton className="h-5 w-20" />
               ) : (
-                <p className="text-base font-semibold font-mono">${expenses.toFixed(2)}</p>
+                <p className="text-base font-semibold font-mono">{getCurrencySymbol()}{expenses.toFixed(2)}</p>
               )}
             </div>
           </div>

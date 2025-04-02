@@ -24,12 +24,7 @@ export default function HomePage() {
     >
       <div className="p-4 space-y-6 pb-20">
         <BalanceOverview />
-        <SpendingInsights />
         <RecentTransactions />
-        <BudgetProgress />
-        <FinancialInsights />
-        <FinancialGoals />
-        <FinanceNews />
       </div>
 
       {/* Add Transaction Button (Floating) */}

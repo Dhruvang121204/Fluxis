@@ -12,6 +12,7 @@ import HomePage from "@/pages/home-page";
 import TransactionsPage from "@/pages/transactions-page";
 import BudgetPage from "@/pages/budget-page";
 import ReportsPage from "@/pages/reports-page";
+import FinanceGptPage from "@/pages/finance-gpt-page";
 import SettingsPage from "@/pages/settings-page";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <ProtectedRoute path="/" component={HomePage} />
       <ProtectedRoute path="/transactions" component={TransactionsPage} />
       <ProtectedRoute path="/budget" component={BudgetPage} />
+      <ProtectedRoute path="/finance-gpt" component={FinanceGptPage} />
       <ProtectedRoute path="/reports" component={ReportsPage} />
       <ProtectedRoute path="/settings" component={SettingsPage} />
       <Route path="/auth" component={AuthPage} />

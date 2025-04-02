@@ -6,7 +6,7 @@ interface AppShellProps {
   children: ReactNode;
   title: string;
   subtitle?: string;
-  activePage: "home" | "transactions" | "budget" | "reports" | "settings";
+  activePage: "home" | "transactions" | "budget" | "finance-gpt" | "reports" | "settings";
 }
 
 export default function AppShell({ children, title, subtitle, activePage }: AppShellProps) {

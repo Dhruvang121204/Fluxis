@@ -158,7 +158,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // User Settings API
-  app.get("/api/settings", requireAuth, async (req, res) => {
+  app.get("/api/user/settings", requireAuth, async (req, res) => {
     try {
       const userId = req.user!.id;
       const settings = await storage.getUserSettingsByUserId(userId);
@@ -168,7 +168,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/settings", requireAuth, async (req, res) => {
+  app.post("/api/user/settings", requireAuth, async (req, res) => {
     try {
       const userId = req.user!.id;
       const result = insertUserSettingsSchema.safeParse({ ...req.body, userId });

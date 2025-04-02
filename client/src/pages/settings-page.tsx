@@ -107,8 +107,10 @@ export default function SettingsPage() {
   });
 
   function onSubmit(data: SettingsFormValues) {
-    saveSettingsMutation.mutate(data);
+    // Apply theme change immediately without waiting for mutation
     setTheme(data.theme as "light" | "dark" | "system");
+    // Then save all settings
+    saveSettingsMutation.mutate(data);
   }
 
   function handleLogout() {
@@ -143,7 +145,10 @@ export default function SettingsPage() {
                         <FormItem>
                           <FormLabel>App Theme</FormLabel>
                           <Select
-                            onValueChange={field.onChange}
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              setTheme(value as "light" | "dark" | "system");
+                            }}
                             defaultValue={field.value}
                           >
                             <FormControl>
@@ -184,6 +189,7 @@ export default function SettingsPage() {
                               <SelectItem value="USD">US Dollar ($)</SelectItem>
                               <SelectItem value="EUR">Euro (€)</SelectItem>
                               <SelectItem value="GBP">British Pound (£)</SelectItem>
+                              <SelectItem value="INR">Indian Rupee (₹)</SelectItem>
                               <SelectItem value="JPY">Japanese Yen (¥)</SelectItem>
                               <SelectItem value="CAD">Canadian Dollar (C$)</SelectItem>
                               <SelectItem value="AUD">Australian Dollar (A$)</SelectItem>
@@ -214,6 +220,7 @@ export default function SettingsPage() {
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="en">English</SelectItem>
+                              <SelectItem value="hi">Hindi</SelectItem>
                               <SelectItem value="es">Spanish</SelectItem>
                               <SelectItem value="fr">French</SelectItem>
                               <SelectItem value="de">German</SelectItem>

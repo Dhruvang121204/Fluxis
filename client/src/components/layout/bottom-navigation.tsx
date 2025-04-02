@@ -4,11 +4,12 @@ import {
   BarChart2, 
   PieChart, 
   Settings, 
-  FileText
+  FileText,
+  Bot
 } from "lucide-react";
 
 interface BottomNavigationProps {
-  activePage: "home" | "transactions" | "budget" | "reports" | "settings";
+  activePage: "home" | "transactions" | "budget" | "finance-gpt" | "reports" | "settings";
 }
 
 export default function BottomNavigation({ activePage }: BottomNavigationProps) {
@@ -18,6 +19,7 @@ export default function BottomNavigation({ activePage }: BottomNavigationProps) 
     { name: "Home", icon: Home, route: "/", key: "home" },
     { name: "Transactions", icon: FileText, route: "/transactions", key: "transactions" },
     { name: "Budget", icon: BarChart2, route: "/budget", key: "budget" },
+    { name: "FinanceGPT", icon: Bot, route: "/finance-gpt", key: "finance-gpt" },
     { name: "Reports", icon: PieChart, route: "/reports", key: "reports" },
     { name: "Settings", icon: Settings, route: "/settings", key: "settings" },
   ];

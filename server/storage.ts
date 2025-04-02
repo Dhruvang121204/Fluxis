@@ -130,7 +130,83 @@ export class MemStorage implements IStorage {
     const createdAt = new Date();
     const user: User = { ...insertUser, id, createdAt };
     this.users.set(id, user);
+    
+    // Create sample transactions for new users
+    await this.createSampleTransactions(id);
+    
     return user;
+  }
+  
+  // Helper method to create sample transactions for demo purposes
+  private async createSampleTransactions(userId: number): Promise<void> {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const twoDaysAgo = new Date(today);
+    twoDaysAgo.setDate(today.getDate() - 2);
+    const lastWeek = new Date(today);
+    lastWeek.setDate(today.getDate() - 7);
+    
+    // Sample income transactions
+    const sampleIncomeTransactions: InsertTransaction[] = [
+      {
+        userId,
+        type: "income",
+        amount: 2500,
+        category: "Salary",
+        description: "Monthly salary",
+        date: lastWeek.toISOString().split('T')[0]
+      },
+      {
+        userId,
+        type: "income",
+        amount: 350,
+        category: "Freelance",
+        description: "Website design project",
+        date: yesterday.toISOString().split('T')[0]
+      },
+      {
+        userId,
+        type: "income",
+        amount: 75,
+        category: "Other Income",
+        description: "Cash back rewards",
+        date: today.toISOString().split('T')[0]
+      }
+    ];
+    
+    // Sample expense transactions
+    const sampleExpenseTransactions: InsertTransaction[] = [
+      {
+        userId,
+        type: "expense",
+        amount: 950,
+        category: "Housing",
+        description: "Monthly rent",
+        date: yesterday.toISOString().split('T')[0]
+      },
+      {
+        userId,
+        type: "expense",
+        amount: 120,
+        category: "Food & Dining",
+        description: "Grocery shopping",
+        date: today.toISOString().split('T')[0]
+      },
+      {
+        userId,
+        type: "expense",
+        amount: 14.99,
+        category: "Subscriptions",
+        description: "Netflix monthly",
+        date: twoDaysAgo.toISOString().split('T')[0]
+      }
+    ];
+    
+    // Create all sample transactions
+    for (const transaction of [...sampleIncomeTransactions, ...sampleExpenseTransactions]) {
+      await this.createTransaction(transaction);
+    }
   }
 
   // Transaction methods

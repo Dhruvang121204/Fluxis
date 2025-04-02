@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Transaction } from "@shared/schema";
+import { Transaction, UserSettings } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,9 +10,31 @@ import { useLocation } from "wouter";
 export default function RecentTransactions() {
   const [_, setLocation] = useLocation();
   
-  const { data: transactions, isLoading } = useQuery<Transaction[]>({
+  const { data: transactions, isLoading: transactionsLoading } = useQuery<Transaction[]>({
     queryKey: ["/api/transactions"],
   });
+  
+  const { data: userSettings, isLoading: settingsLoading } = useQuery<UserSettings>({
+    queryKey: ["/api/user/settings"],
+  });
+  
+  const isLoading = transactionsLoading || settingsLoading;
+  
+  // Determine the currency symbol based on user settings
+  const getCurrencySymbol = () => {
+    if (!userSettings?.currency) return "$"; // Default to USD
+    
+    switch(userSettings.currency) {
+      case "USD": return "$";
+      case "EUR": return "€";
+      case "GBP": return "£";
+      case "INR": return "₹";
+      case "JPY": return "¥";
+      case "CAD": return "C$";
+      case "AUD": return "A$";
+      default: return "$";
+    }
+  };
 
   const getRecentTransactions = () => {
     if (!transactions) return [];
@@ -132,7 +154,7 @@ export default function RecentTransactions() {
                 <p className={`font-semibold ${
                   transaction.type === 'income' ? 'text-success-500' : 'text-danger-500'
                 } font-mono`}>
-                  {transaction.type === 'income' ? '+' : '-'}${Number(transaction.amount).toFixed(2)}
+                  {transaction.type === 'income' ? '+' : '-'}{getCurrencySymbol()}{Number(transaction.amount).toFixed(2)}
                 </p>
               </div>
             ))
