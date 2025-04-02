@@ -15,6 +15,7 @@ import ReportsPage from "@/pages/reports-page";
 import FinanceGptPage from "@/pages/finance-gpt-page";
 import SettingsPage from "@/pages/settings-page";
 import ToolsPage from "@/pages/tools-page";
+import NotificationsPage from "@/pages/notifications-page";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
       <ProtectedRoute path="/finance-gpt" component={FinanceGptPage} />
       <ProtectedRoute path="/reports" component={ReportsPage} />
       <ProtectedRoute path="/settings" component={SettingsPage} />
+      <ProtectedRoute path="/notifications" component={NotificationsPage} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>

@@ -36,7 +36,13 @@ export default function Navbar({ title, subtitle }: NavbarProps) {
           {subtitle && <p className="text-sm opacity-90">{subtitle}</p>}
         </div>
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="icon" aria-label="Notifications" className="text-primary-foreground hover:bg-primary/90">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            aria-label="Notifications" 
+            className="text-primary-foreground hover:bg-primary/90"
+            onClick={() => setLocation("/notifications")}
+          >
             <Bell className="h-5 w-5" />
           </Button>
           <DropdownMenu>

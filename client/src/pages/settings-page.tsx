@@ -47,7 +47,7 @@ import { Loader2 } from "lucide-react";
 
 const settingsFormSchema = z.object({
   theme: z.enum(["light", "dark", "system"]),
-  currency: z.string().min(1),
+
   language: z.string().min(1),
   notifications: z.boolean(),
 });
@@ -67,7 +67,6 @@ export default function SettingsPage() {
     resolver: zodResolver(settingsFormSchema),
     defaultValues: {
       theme: "light",
-      currency: "USD",
       language: "en",
       notifications: true,
     },
@@ -78,7 +77,6 @@ export default function SettingsPage() {
     if (userSettings) {
       form.reset({
         theme: (userSettings.theme as "light" | "dark" | "system") || "light",
-        currency: userSettings.currency || "USD",
         language: userSettings.language || "en",
         notifications: userSettings.notifications || true,
       });
@@ -170,38 +168,7 @@ export default function SettingsPage() {
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="currency"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Currency</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select currency" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="USD">US Dollar ($)</SelectItem>
-                              <SelectItem value="EUR">Euro (€)</SelectItem>
-                              <SelectItem value="GBP">British Pound (£)</SelectItem>
-                              <SelectItem value="INR">Indian Rupee (₹)</SelectItem>
-                              <SelectItem value="JPY">Japanese Yen (¥)</SelectItem>
-                              <SelectItem value="CAD">Canadian Dollar (C$)</SelectItem>
-                              <SelectItem value="AUD">Australian Dollar (A$)</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormDescription>
-                            Display amounts in this currency
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+
 
                     <FormField
                       control={form.control}
