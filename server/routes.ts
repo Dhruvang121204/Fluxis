@@ -222,6 +222,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to generate financial advice" });
     }
   });
+  
+  // Finance GPT API
+  app.post("/api/finance-gpt", requireAuth, async (req, res) => {
+    try {
+      const { question } = req.body;
+      
+      if (!question || typeof question !== 'string') {
+        return res.status(400).json({ message: "Question is required" });
+      }
+      
+      const answer = await getFinancialAdvice(question);
+      res.json({ answer });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to generate financial advice" });
+    }
+  });
 
   // Finance News API (simplified mock version)
   app.get("/api/news", requireAuth, async (req, res) => {

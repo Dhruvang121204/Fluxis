@@ -5,7 +5,7 @@ import { z } from "zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Category } from "@shared/schema";
+import { Category, UserSettings } from "@shared/schema";
 
 import {
   Dialog,
@@ -54,6 +54,26 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
+  
+  const { data: userSettings, isLoading: settingsLoading } = useQuery<UserSettings>({
+    queryKey: ["/api/user/settings"],
+  });
+  
+  // Determine the currency symbol based on user settings
+  const getCurrencySymbol = () => {
+    if (!userSettings?.currency) return "$"; // Default to USD
+    
+    switch(userSettings.currency) {
+      case "USD": return "$";
+      case "EUR": return "€";
+      case "GBP": return "£";
+      case "INR": return "₹";
+      case "JPY": return "¥";
+      case "CAD": return "C$";
+      case "AUD": return "A$";
+      default: return "$";
+    }
+  };
 
   const form = useForm<BudgetFormValues>({
     resolver: zodResolver(budgetSchema),
@@ -165,7 +185,7 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
                   <FormControl>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500">$</span>
+                        <span className="text-gray-500">{getCurrencySymbol()}</span>
                       </div>
                       <Input 
                         type="number" 

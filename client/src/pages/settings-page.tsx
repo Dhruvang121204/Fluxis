@@ -60,7 +60,7 @@ export default function SettingsPage() {
   const { toast } = useToast();
   
   const { data: userSettings, isLoading } = useQuery<UserSettings>({
-    queryKey: ["/api/settings"],
+    queryKey: ["/api/user/settings"],
   });
 
   const form = useForm<SettingsFormValues>({
@@ -87,11 +87,11 @@ export default function SettingsPage() {
 
   const saveSettingsMutation = useMutation({
     mutationFn: async (data: SettingsFormValues) => {
-      const res = await apiRequest("POST", "/api/settings", data);
+      const res = await apiRequest("POST", "/api/user/settings", data);
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/settings"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/user/settings"] });
       toast({
         title: "Settings saved",
         description: "Your settings have been updated successfully",
