@@ -377,6 +377,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch finance news" });
     }
   });
+  
+  // Notifications API (simplified mock version)
+  app.get("/api/notifications", requireAuth, async (req, res) => {
+    try {
+      // In a real app, we would fetch from a notification database
+      const notifications = [
+        {
+          id: 1,
+          title: "Monthly Spending Analysis",
+          message: "Your spending analysis for this month is ready. You've spent 15% less on dining compared to last month!",
+          type: "info",
+          date: new Date(),
+          read: false
+        },
+        {
+          id: 2,
+          title: "Transaction Alert",
+          message: "A large transaction of ₹25,000 was made from your account today.",
+          type: "warning",
+          date: new Date(Date.now() - 86400000 * 2),
+          read: true
+        },
+        {
+          id: 3,
+          title: "Bill Payment Reminder",
+          message: "Your electricity bill payment is due in 3 days. Don't forget to pay to avoid late fees.",
+          type: "reminder",
+          date: new Date(Date.now() - 86400000 * 5),
+          read: false
+        },
+        {
+          id: 4,
+          title: "Savings Goal Reached",
+          message: "Congratulations! You've reached your savings goal of ₹50,000 for your vacation fund.",
+          type: "success",
+          date: new Date(Date.now() - 86400000 * 7),
+          read: true
+        }
+      ];
+      
+      res.json(notifications);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch notifications" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;
