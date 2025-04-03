@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { AuthProvider } from "@/hooks/use-auth";
 import { LanguageProvider } from "@/hooks/use-language";
 import { ProtectedRoute } from "@/lib/protected-route";
+import PwaInstallPrompt from "@/components/layout/pwa-install-prompt";
 
 import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
@@ -40,6 +41,7 @@ function App() {
         <AuthProvider>
           <LanguageProvider>
             <Router />
+            <PwaInstallPrompt />
             <Toaster />
           </LanguageProvider>
         </AuthProvider>

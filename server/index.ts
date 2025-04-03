@@ -60,9 +60,10 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = 5000;
-  // Modified for better compatibility with local development environments
-  // Remove reusePort option that causes ENOTSUP errors in some environments
+  // Modified for better compatibility with local development and Android emulator
+  // The Android emulator can access the host machine via 10.0.2.2
   server.listen(port, "0.0.0.0", () => {
     log(`serving on port ${port}`);
+    log(`For Android emulator, access via: http://10.0.2.2:${port}`);
   });
 })();
