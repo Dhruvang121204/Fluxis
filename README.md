@@ -1,9 +1,3 @@
-
-Here’s a clean and professional README.md content for your project based on your instructions:
-
-
----
-
 # Fluxis
 
 Fluxis is a cross-platform web application designed to streamline productivity, habit tracking, and personal planning. Built using modern tools and technologies, it helps users maintain a healthy routine, organize tasks, and track progress — all in one place.
@@ -52,7 +46,7 @@ npm run dev
 
 4. Open the app
 
-Visit http://localhost:3000 in your browser.
+Visit http://localhost:5000 in your browser.
 
 
 
@@ -83,7 +77,3 @@ This project is licensed under the MIT License.
 ---
 
 Built with passion and productivity in mind.
-
----
-
-Let me know if you want badges, screenshots, or a live demo link added too!
